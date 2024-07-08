@@ -10,12 +10,12 @@ on:
   workflow_dispatch:
     inputs:
       OsType:
-        description: "Select OS for testing"
+        description: "Select OS for the python artifact"
         required: true
         type: choice
         options: [ubuntu-latest, windows-latest]
       PythonVersion:
-        description: "Select Python version for testing"
+        description: "Select Python version for the python artifact"
         required: true
         type: choice
         options: [3.8, 3.9]
@@ -36,9 +36,7 @@ jobs:
         PythonVersion: [3.8, 3.9]
         OsType: [ubuntu-latest, windows-latest]
 
-    runs-on: ${{ inputs.OsType }}
-
-
+    runs-on: ${{ matrix.OsType }}
 
     defaults:
       run:
@@ -47,10 +45,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python ${{ inputs.PythonVersion }}
+      - name: Set up Python ${{ matrix.PythonVersion }}
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ inputs.PythonVersion }}
+          python-version: ${{ matrix.PythonVersion }}
 
       - name: Install dependencies
         run: |
@@ -75,7 +73,8 @@ jobs:
         run: |
           flake8 . --exit-zero --max-complexity=6
 
-      - name: Upload python artifacts
+      - name: Upload python artifacts ${{ matrix.OsType }}-${{ matrix.PythonVersion }}
+        if: ${{ matrix.OsType == inputs.OsType && matrix.PythonVersion == inputs.PythonVersion}}
         uses: actions/upload-artifact@v4
         with:
           name: python-artifacts
