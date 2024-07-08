@@ -30,7 +30,7 @@ env:
 
 jobs:
   python-ci:
-    if: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.PythonVersion && github.event.inputs.OsType }}
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.PythonVersion && github.event.inputs.OsType
     strategy:
       matrix:
         PythonVersion: [3.8, 3.9]
@@ -74,7 +74,7 @@ jobs:
           flake8 . --exit-zero --max-complexity=6
 
       - name: Upload python artifacts ${{ matrix.OsType }}-${{ matrix.PythonVersion }}
-        if: ${{ matrix.OsType == github.event.inputs.OsType && matrix.PythonVersion == github.event.inputs.PythonVersion }}
+        if: matrix.OsType == github.event.inputs.OsType && matrix.PythonVersion == github.event.inputs.PythonVersion
         uses: actions/upload-artifact@v4
         with:
           name: python-artifacts
