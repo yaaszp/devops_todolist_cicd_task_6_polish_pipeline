@@ -74,10 +74,10 @@ jobs:
           flake8 . --exit-zero --max-complexity=6
 
       - name: Upload python artifacts ${{ matrix.OsType }}-${{ matrix.PythonVersion }}
-        if: ${{ matrix.OsType == inputs.OsType && matrix.PythonVersion == inputs.PythonVersion}}
+        if: ${{ matrix.OsType == github.event.inputs.OsType && matrix.PythonVersion == github.event.inputs.PythonVersion }}
         uses: actions/upload-artifact@v4
         with:
-          name: python-artifacts
+          name: python-artifacts-${{ matrix.OsType }}-${{ matrix.PythonVersion }}
           path: .
 
       - name: Upload helm artifacts
