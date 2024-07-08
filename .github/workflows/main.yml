@@ -10,11 +10,9 @@ on:
   # workflow_dispatch:
   #   inputs:
 
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
-
 
 env:
   PythonVersion: 3.8
