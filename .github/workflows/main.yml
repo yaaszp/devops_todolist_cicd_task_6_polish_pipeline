@@ -77,7 +77,7 @@ jobs:
         if: ${{ matrix.OsType == github.event.inputs.OsType && matrix.PythonVersion == github.event.inputs.PythonVersion }}
         uses: actions/upload-artifact@v4
         with:
-          name: python-artifacts-${{ matrix.OsType }}-${{ matrix.PythonVersion }}
+          name: python-artifacts
           path: .
 
       - name: Upload helm artifacts
